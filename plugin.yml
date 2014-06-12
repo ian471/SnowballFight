@@ -1,0 +1,8 @@
+name: SnowballFight
+version: 0.1
+main: com.poorfox.snowballfight.SnowballFight
+author: Ian Henckel
+commands:
+    snowball:
+        description: Snowball fight command
+        usage: /snowball <some stuff>
