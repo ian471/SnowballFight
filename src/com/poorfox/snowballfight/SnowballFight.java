@@ -3,12 +3,15 @@ package com.poorfox.snowballfight;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -42,16 +45,38 @@ public class SnowballFight extends JavaPlugin implements Listener {
 	}
 	
 	@EventHandler
-	public void onSnowballHit(EntityDamageByEntityEvent event) {
-		
+	public void stopPvp(EntityDamageByEntityEvent event) {
 		if (event.getEntityType() != EntityType.PLAYER) return;
-		
-		// DISABLE ALL OTHER PVP
-		if (event.getDamager().getType() == EntityType.PLAYER) {
+		getLogger().info("Player should get hurt");
+		if(event.getDamager().getType().equals(EntityType.PLAYER)){
+			getLogger().info("Player not hurt by player");
 			event.setCancelled(true);
 			return;
 		}
+		if(event.getDamager() instanceof Arrow){
+			Arrow arrow = (Arrow) event.getDamager();
+			if(arrow.getShooter() instanceof Player){
+				getLogger().info("Player not hurt by arrow");
+				event.setCancelled(true);
+				return;
+			}
+		}
+//		if (event.getCause().equals(DamageCause.PROJECTILE)) {
+//			try{
+//				Arrow arrow = (Arrow) event.getDamager();
+//				event.setCancelled(true);
+//				return;
+//			} catch(ClassCastException e){}
+//		} else {
+//			event.setCancelled(true);
+//			return;
+//		}
+	}
+	
+	@EventHandler
+	public void onSnowballHit(EntityDamageByEntityEvent event) {
 		
+		if (event.getEntityType() != EntityType.PLAYER) return;
 		if (event.getDamager().getType() != EntityType.SNOWBALL) return;
 		
 		getLogger().info("SOMEONE GOT VERY MUCH HURT BY A SNOWBALL.");
