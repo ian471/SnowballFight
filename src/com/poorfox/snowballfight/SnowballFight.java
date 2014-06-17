@@ -65,15 +65,23 @@ public class SnowballFight extends JavaPlugin implements Listener {
 		if (event.getDamager().getType() != EntityType.SNOWBALL) return;
 		
 		Player target = (Player) event.getEntity();
-		Score targetScore = scoreObjective.getScore(target.getDisplayName());
-		targetScore.setScore(targetScore.getScore() - 1);
 		
 		Snowball snowball = (Snowball) event.getDamager();
 		if (snowball.getShooter() == null ||
 				snowball.getShooter().getType() != EntityType.PLAYER) return;
 		Player thrower = (Player) snowball.getShooter();
+
+		Score targetScore = scoreObjective.getScore(target.getDisplayName());
 		Score throwerScore = scoreObjective.getScore(thrower.getDisplayName());
-		throwerScore.setScore(throwerScore.getScore() + 2);
+		
+		// SCORING RULES:
+		// The thrower takes 10% of the target's score, or 1 point at least,
+		// plus one additional point.
+
+		int scoreDelta = Math.max(1, targetScore.getScore() / 10);
+
+		targetScore.setScore(targetScore.getScore() - scoreDelta);
+		throwerScore.setScore(throwerScore.getScore() + scoreDelta + 1);
 	}
 	
 }
