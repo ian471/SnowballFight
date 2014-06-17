@@ -45,30 +45,17 @@ public class SnowballFight extends JavaPlugin implements Listener {
 	@EventHandler
 	public void stopPvp(EntityDamageByEntityEvent event) {
 		if (event.getEntityType() != EntityType.PLAYER) return;
-		getLogger().info("Player should get hurt");
 		if(event.getDamager().getType().equals(EntityType.PLAYER)){
-			getLogger().info("Player not hurt by player");
 			event.setCancelled(true);
 			return;
 		}
 		if(event.getDamager() instanceof Arrow){
 			Arrow arrow = (Arrow) event.getDamager();
 			if(arrow.getShooter() instanceof Player){
-				getLogger().info("Player not hurt by arrow");
 				event.setCancelled(true);
 				return;
 			}
 		}
-//		if (event.getCause().equals(DamageCause.PROJECTILE)) {
-//			try{
-//				Arrow arrow = (Arrow) event.getDamager();
-//				event.setCancelled(true);
-//				return;
-//			} catch(ClassCastException e){}
-//		} else {
-//			event.setCancelled(true);
-//			return;
-//		}
 	}
 	
 	@EventHandler
@@ -77,7 +64,6 @@ public class SnowballFight extends JavaPlugin implements Listener {
 		if (event.getEntityType() != EntityType.PLAYER) return;
 		if (event.getDamager().getType() != EntityType.SNOWBALL) return;
 		
-		getLogger().info("SOMEONE GOT VERY MUCH HURT BY A SNOWBALL.");
 		Player target = (Player) event.getEntity();
 		Score targetScore = scoreObjective.getScore(target.getDisplayName());
 		targetScore.setScore(targetScore.getScore() - 1);

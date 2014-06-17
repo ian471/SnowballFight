@@ -52,3 +52,4 @@ $RECYCLE.BIN/
 *.msp
 
 .settings
+/bin
